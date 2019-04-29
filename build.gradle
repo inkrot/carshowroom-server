@@ -1,8 +1,3 @@
-plugins {
-    id 'java'
-    id "org.springframework.boot" version "2.0.1.RELEASE"
-}
-
 buildscript {
     repositories {
         maven { url "http://repo.spring.io/libs-release" }
@@ -14,6 +9,11 @@ buildscript {
     }
 }
 
+plugins {
+    id 'java'
+    id "org.springframework.boot" version "2.0.1.RELEASE"
+}
+
 group 'com.mera.inkrot.carshowroom'
 version '1.0-SNAPSHOT'
 
@@ -22,7 +22,7 @@ sourceCompatibility = 1.8
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'carshowroom-server'
