@@ -10,8 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping("/rest/customer")
+@RequestMapping("/rest/order")
 public class OrderRestController {
 
     Logger logger = LoggerFactory.getLogger(OrderRestController.class);
@@ -21,18 +23,31 @@ public class OrderRestController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Order> getOrder(@PathVariable("id") Long orderId) {
-        if (orderId == null) {
-            logger.info("get order by null id");
+        if (orderId == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
 
         Order order = orderService.getById(orderId);
 
-        if (order == null) {
-            logger.info("not found order by {} id", orderId);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Order> saveOrder(@RequestBody @Valid Order order) {
+        if (order == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        orderService.save(order);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Order> deleteOrder(@PathVariable("id") Long orderId) {
+        if (orderId == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        orderService.delete(orderId);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

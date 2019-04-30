@@ -8,10 +8,8 @@ import javax.persistence.Table;
 @Table(name = "order_statuses")
 public class OrderStatus extends BaseEntity {
 
-    @Column(name = "code")
     private String code;
 
-    @Column(name = "name")
     private String name;
 
     public String getCode() {

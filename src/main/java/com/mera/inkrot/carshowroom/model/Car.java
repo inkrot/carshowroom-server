@@ -1,26 +1,23 @@
 package com.mera.inkrot.carshowroom.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "cars")
 public class Car extends BaseEntity {
 
-    @Column(name = "name")
-    private String name;
+    private String model;
 
     @JoinColumn(name = "brand_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Brand brand;
 
-    public String getName() {
-        return name;
+    public String getModel() {
+        return model;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public Brand getBrand() {

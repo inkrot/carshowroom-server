@@ -4,13 +4,15 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "orders_options")
-public class OrderOption {
+public class OrderOption extends BaseEntity {
 
     @JoinColumn(name = "order_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Order order;
 
     @JoinColumn(name = "option_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Option option;
+
 }
+

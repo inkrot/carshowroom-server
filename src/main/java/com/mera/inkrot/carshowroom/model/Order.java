@@ -2,24 +2,26 @@ package com.mera.inkrot.carshowroom.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "status_id")
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private HashSet<OrderOption> options;
+    private Set<OrderOption> options;
 
     public Customer getCustomer() {
         return customer;
@@ -45,11 +47,11 @@ public class Order extends BaseEntity {
         this.status = status;
     }
 
-    public HashSet<OrderOption> getOptions() {
+    public Set<OrderOption> getOptions() {
         return options;
     }
 
-    public void setOptions(HashSet<OrderOption> options) {
+    public void setOptions(Set<OrderOption> options) {
         this.options = options;
     }
 }

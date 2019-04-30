@@ -1,5 +1,7 @@
 package com.mera.inkrot.carshowroom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -8,7 +10,6 @@ import javax.persistence.Table;
 @Table(name = "customers")
 public class Customer extends BaseEntity {
 
-    @Column(name = "name")
     private String name;
 
     public String getName() {

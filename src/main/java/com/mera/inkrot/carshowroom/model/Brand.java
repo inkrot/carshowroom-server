@@ -8,7 +8,6 @@ import javax.persistence.Table;
 @Table(name = "brands")
 public class Brand extends BaseEntity {
 
-    @Column(name = "name")
     private String name;
 
     public String getName() {
