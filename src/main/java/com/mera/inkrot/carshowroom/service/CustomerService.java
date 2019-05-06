@@ -4,4 +4,5 @@ import com.mera.inkrot.carshowroom.model.Customer;
 
 public interface CustomerService {
     Customer getById(Long id);
+    Customer save(String name);
 }

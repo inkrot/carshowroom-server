@@ -12,6 +12,14 @@ public class Car extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private Brand brand;
 
+    public Car() {
+    }
+
+    public Car(String model, Brand brand) {
+        this.model = model;
+        this.brand = brand;
+    }
+
     public String getModel() {
         return model;
     }

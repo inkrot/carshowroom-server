@@ -22,8 +22,22 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getById(Long id) {
         logger.info("get customer by id: {}", id);
         Optional<Customer> customer = customerRepository.findById(id);
-        if(! customer.isPresent())
+        if (! customer.isPresent())
             throw new IllegalArgumentException("Customer not found");
         return customer.get();
+    }
+
+    @Override
+    public Customer save(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Customer name do not entered");
+        }
+        Customer findCustomer = customerRepository.getCustomerByName(name);
+        if (findCustomer != null) {
+            logger.debug("Customer {} already exist", name);
+            return findCustomer;
+        }
+        logger.info("save customer: {}", name);
+        return customerRepository.saveAndFlush(new Customer(name));
     }
 }

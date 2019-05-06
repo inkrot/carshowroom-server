@@ -20,8 +20,27 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "status_id")
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderOption> options;
+    /*@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderOption> options;*/
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "orders_options",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "option_id")
+    )
+    private Set<Option> options = new HashSet<>();
+
+    public Order() {
+    }
+
+    public Order(Customer customer, Car car, OrderStatus status) {
+        this.customer = customer;
+        this.car = car;
+        this.status = status;
+    }
 
     public Customer getCustomer() {
         return customer;
@@ -47,11 +66,22 @@ public class Order extends BaseEntity {
         this.status = status;
     }
 
+    public Set<Option> getOptions() {
+        return options;
+    }
+
+    public void setOptions(Set<Option> options) {
+        this.options = options;
+    }
+
+    /*
     public Set<OrderOption> getOptions() {
         return options;
     }
 
     public void setOptions(Set<OrderOption> options) {
         this.options = options;
-    }
+    }*/
+
+
 }

@@ -1,4 +1,4 @@
-package com.mera.inkrot.carshowroom.model;
+/*package com.mera.inkrot.carshowroom.model;
 
 import javax.persistence.*;
 
@@ -14,5 +14,7 @@ public class OrderOption extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private Option option;
 
-}
+    public OrderOption() {
+    }
+}*/
 

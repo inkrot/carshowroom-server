@@ -12,6 +12,13 @@ public class OrderStatus extends BaseEntity {
 
     private String name;
 
+    public OrderStatus() {
+    }
+
+    public OrderStatus(Long id) {
+        super.setId(id);
+    }
+
     public String getCode() {
         return code;
     }
