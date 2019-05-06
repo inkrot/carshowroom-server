@@ -11,12 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rest/order")
 public class OrderRestController {
-
-    Logger logger = LoggerFactory.getLogger(OrderRestController.class);
 
     @Autowired
     private OrderService orderService;
@@ -25,19 +24,19 @@ public class OrderRestController {
     public ResponseEntity<Order> getOrder(@PathVariable("id") Long orderId) {
         if (orderId == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(orderService.getById(orderId), HttpStatus.OK);
+    }
 
-        Order order = orderService.getById(orderId);
-
-        return new ResponseEntity<>(order, HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return new ResponseEntity<>(orderService.getAll(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Order> saveOrder(@RequestBody @Valid Order order) {
         if (order == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
         orderService.save(order);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -45,9 +44,7 @@ public class OrderRestController {
     public ResponseEntity<Order> deleteOrder(@PathVariable("id") Long orderId) {
         if (orderId == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
         orderService.delete(orderId);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
