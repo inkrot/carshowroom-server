@@ -60,8 +60,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void setOptions(Order order, Set<Option> options) {
-        order.setOptions(options);
-        orderRepository.save(order);
+        for (Option option : options)
+            addOption(order, option);
     }
 
     @Override

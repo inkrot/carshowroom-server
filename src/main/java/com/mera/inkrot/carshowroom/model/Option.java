@@ -20,12 +20,4 @@ public class Option extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
-
-    /*public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }*/
 }

@@ -20,8 +20,7 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "status_id")
     private OrderStatus status;
 
-    /*@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderOption> options;*/
+    /*@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)*/
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -69,19 +68,5 @@ public class Order extends BaseEntity {
     public Set<Option> getOptions() {
         return options;
     }
-
-    public void setOptions(Set<Option> options) {
-        this.options = options;
-    }
-
-    /*
-    public Set<OrderOption> getOptions() {
-        return options;
-    }
-
-    public void setOptions(Set<OrderOption> options) {
-        this.options = options;
-    }*/
-
 
 }

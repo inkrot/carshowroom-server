@@ -2,8 +2,6 @@ package com.mera.inkrot.carshowroom.rest;
 
 import com.mera.inkrot.carshowroom.dto.OrderDto;
 import com.mera.inkrot.carshowroom.model.*;
-import com.mera.inkrot.carshowroom.service.CarService;
-import com.mera.inkrot.carshowroom.service.CustomerService;
 import com.mera.inkrot.carshowroom.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/rest/order")
@@ -35,17 +31,8 @@ public class OrderRestController {
         return new ResponseEntity<>(orderService.getAll(), HttpStatus.OK);
     }
 
-    /*@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Order> addOrder(@RequestBody @Valid Order order) {
-        if (order == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        customerService.save(order.getCustomer());
-        orderService.save(order);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }*/
-
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Order> addOrder(@RequestBody /*warning ->*/ @Valid OrderDto orderDto) {
+    public ResponseEntity<Order> addOrder(@RequestBody @Valid OrderDto orderDto) {
         orderService.save(orderDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -55,6 +42,6 @@ public class OrderRestController {
         if (orderId == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         orderService.delete(orderId);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
