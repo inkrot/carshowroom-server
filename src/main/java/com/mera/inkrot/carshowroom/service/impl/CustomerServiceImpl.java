@@ -6,11 +6,13 @@ import com.mera.inkrot.carshowroom.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import javax.jws.WebService;
 import java.util.Optional;
 
-@Service
+@WebService
+@Component
 public class CustomerServiceImpl implements CustomerService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);

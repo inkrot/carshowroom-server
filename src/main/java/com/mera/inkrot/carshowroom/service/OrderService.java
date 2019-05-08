@@ -4,14 +4,32 @@ import com.mera.inkrot.carshowroom.dto.OrderDto;
 import com.mera.inkrot.carshowroom.model.Option;
 import com.mera.inkrot.carshowroom.model.Order;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 import java.util.Set;
 
+@WebService
 public interface OrderService {
 
-    Order getById(Long id);
+    @WebMethod(action = "getById")
+    @XmlElement(name = "order")
+    Order getById(@WebParam(name = "id") Long id);
 
-    void save(OrderDto order);
+    @WebMethod(action = "getAll")
+    @XmlElementWrapper(name = "orders")
+    @XmlElement(name = "order")
+    List<Order> getAll();
+
+    @WebMethod(action = "save")
+    @XmlElement(name = "order")
+    Order save(@WebParam(name = "order") OrderDto order);
+
+    @WebMethod(action = "delete")
+    void delete(@WebParam(name = "id") Long id);
 
     void addOption(Order order, Option option);
 
@@ -19,9 +37,5 @@ public interface OrderService {
 
     void removeOption(Order order, Option option);
 
-    List<Option> getOptions(Long orderId);
-
-    void delete(Long id);
-
-    List<Order> getAll();
+    Set<Option> getOptions(Long orderId);
 }

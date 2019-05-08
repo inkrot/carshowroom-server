@@ -1,11 +1,12 @@
 package com.mera.inkrot.carshowroom.model;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "options")
+@XmlRootElement(name = "option")
 public class Option extends BaseEntity {
 
     private String name;

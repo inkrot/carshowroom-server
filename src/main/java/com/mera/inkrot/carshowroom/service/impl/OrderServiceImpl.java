@@ -10,11 +10,16 @@ import com.mera.inkrot.carshowroom.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.*;
+import javax.jws.WebService;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-@Service
+@WebService
+@Component
 public class OrderServiceImpl implements OrderService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
@@ -41,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void save(OrderDto orderDto) {
+    public Order save(OrderDto orderDto) {
         Set<Option> options = new HashSet<>();
         for (Long optionId : orderDto.getOptions())
             options.add(optionService.getById(optionId));
@@ -50,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.save(new Order(customer, car, new OrderStatus(1L)));
         setOptions(order, options);
         logger.info("save order: {}", order.getId());
+        return order;
     }
 
     @Override
@@ -70,9 +76,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Option> getOptions(Long orderId) {
-        // TODO
-        return null;
+    public Set<Option> getOptions(Long orderId) {
+        return getById(orderId).getOptions();
     }
 
     @Override

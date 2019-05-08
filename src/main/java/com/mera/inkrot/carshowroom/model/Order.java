@@ -1,11 +1,14 @@
 package com.mera.inkrot.carshowroom.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "order")
 public class Order extends BaseEntity {
 
     @ManyToOne
@@ -20,16 +23,16 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "status_id")
     private OrderStatus status;
 
-    /*@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)*/
-
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+            CascadeType.MERGE,
+    }, fetch = FetchType.EAGER)
     @JoinTable(name = "orders_options",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id")
     )
+    @XmlElementWrapper(name = "options")
+    @XmlElement(name = "option")
     private Set<Option> options = new HashSet<>();
 
     public Order() {

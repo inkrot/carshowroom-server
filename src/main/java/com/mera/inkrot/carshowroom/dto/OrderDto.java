@@ -1,13 +1,18 @@
 package com.mera.inkrot.carshowroom.dto;
 
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Set;
 
+@XmlRootElement(name="order")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrderDto implements Serializable {
 
     private String customerName;
     private String modelName;
     private String brandName;
+    @XmlElementWrapper(name = "options")
+    @XmlElement(name = "id")
     private Set<Long> options;
 
     public OrderDto() {
