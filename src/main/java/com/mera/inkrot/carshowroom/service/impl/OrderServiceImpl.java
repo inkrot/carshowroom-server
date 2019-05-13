@@ -1,22 +1,18 @@
 package com.mera.inkrot.carshowroom.service.impl;
 
+import com.mera.inkrot.carshowroom.dto.OptionDto;
 import com.mera.inkrot.carshowroom.dto.OrderDto;
+import com.mera.inkrot.carshowroom.dto.StatusDto;
 import com.mera.inkrot.carshowroom.model.*;
 import com.mera.inkrot.carshowroom.repository.OrderRepository;
-import com.mera.inkrot.carshowroom.service.CarService;
-import com.mera.inkrot.carshowroom.service.CustomerService;
-import com.mera.inkrot.carshowroom.service.OptionService;
-import com.mera.inkrot.carshowroom.service.OrderService;
+import com.mera.inkrot.carshowroom.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.jws.WebService;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @WebService
 @Component
@@ -36,26 +32,54 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OptionService optionService;
 
+    @Autowired
+    StatusService statusService;
+
+    private OrderDto saveOrUpdate(Long id, OrderDto orderDto) {
+        Set<Option> options = new HashSet<>();
+        for (OptionDto optionDto : orderDto.getOptions())
+            options.add(optionService.getById(optionDto.getId()));
+        Customer customer = customerService.save(orderDto.getCustomerName());
+        Car car = carService.save(orderDto.getModelName(), orderDto.getBrandName());
+        Status status = statusService.getById(orderDto.getStatus().getId());
+        Order order = orderRepository.save(new Order(id, customer, car, status));
+        setOptions(order, options);
+        return OrderDto.getFromEntity(order);
+    }
+
     @Override
-    public Order getById(Long id) {
+    public OrderDto save(OrderDto orderDto) {
+        orderDto.setStatus(StatusDto.getFromEntity(statusService.getById(1L)));
+        OrderDto order = saveOrUpdate(null, orderDto);
+        logger.info("save order: {}", order.getId());
+        return order;
+    }
+
+    @Override
+    public OrderDto update(Long id, OrderDto orderDto) {
+        OrderDto findOrder = getById(id);
+        if (orderDto.getCustomerName() != null)
+            findOrder.setCustomerName(orderDto.getCustomerName());
+        if (orderDto.getModelName() != null)
+            findOrder.setModelName(orderDto.getModelName());
+        if (orderDto.getBrandName() != null)
+            findOrder.setBrandName(orderDto.getBrandName());
+        if (orderDto.getStatus().getId() != null)
+            findOrder.setStatus(orderDto.getStatus());
+        if (orderDto.getOptions().size() > 0)
+            findOrder.setOptions(orderDto.getOptions());
+        OrderDto order = saveOrUpdate(id, findOrder);
+        logger.info("update order: {}", order.getId());
+        return order;
+    }
+
+    @Override
+    public OrderDto getById(Long id) {
         logger.info("get order by id: {}", id);
         Optional<Order> order = orderRepository.findById(id);
         if(! order.isPresent())
             throw new IllegalArgumentException("Order not found");
-        return order.get();
-    }
-
-    @Override
-    public Order save(OrderDto orderDto) {
-        Set<Option> options = new HashSet<>();
-        for (Long optionId : orderDto.getOptions())
-            options.add(optionService.getById(optionId));
-        Customer customer = customerService.save(orderDto.getCustomerName());
-        Car car = carService.save(orderDto.getModelName(), orderDto.getBrandName());
-        Order order = orderRepository.save(new Order(customer, car, new OrderStatus(1L)));
-        setOptions(order, options);
-        logger.info("save order: {}", order.getId());
-        return order;
+        return OrderDto.getFromEntity(order.get());
     }
 
     @Override
@@ -76,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Set<Option> getOptions(Long orderId) {
+    public Set<OptionDto> getOptions(Long orderId) {
         return getById(orderId).getOptions();
     }
 
@@ -88,8 +112,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAll() {
+    public List<OrderDto> getAll() {
         logger.info("get all orders");
-        return orderRepository.findAll();
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        for (Order order : orderRepository.findAll())
+            orderDtoList.add(OrderDto.getFromEntity(order));
+        return orderDtoList;
     }
 }

@@ -21,7 +21,7 @@ public class Order extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "status_id")
-    private OrderStatus status;
+    private Status status;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -38,7 +38,8 @@ public class Order extends BaseEntity {
     public Order() {
     }
 
-    public Order(Customer customer, Car car, OrderStatus status) {
+    public Order(Long id, Customer customer, Car car, Status status) {
+        if (id != null) setId(id);
         this.customer = customer;
         this.car = car;
         this.status = status;
@@ -60,16 +61,15 @@ public class Order extends BaseEntity {
         this.car = car;
     }
 
-    public OrderStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
     public Set<Option> getOptions() {
         return options;
     }
-
 }

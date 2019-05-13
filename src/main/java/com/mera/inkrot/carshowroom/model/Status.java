@@ -1,21 +1,19 @@
 package com.mera.inkrot.carshowroom.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "order_statuses")
-public class OrderStatus extends BaseEntity {
+public class Status extends BaseEntity {
 
     private String code;
 
     private String name;
 
-    public OrderStatus() {
-    }
+    public Status() { }
 
-    public OrderStatus(Long id) {
+    public Status(Long id) {
         super.setId(id);
     }
 
