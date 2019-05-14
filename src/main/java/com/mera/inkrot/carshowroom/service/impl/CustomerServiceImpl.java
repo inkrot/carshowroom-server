@@ -21,6 +21,19 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerRepository customerRepository;
 
     @Override
+    public Customer save(String name) {
+        if (name == null)
+            throw new IllegalArgumentException("Customer name do not entered");
+        Optional<Customer> customer = customerRepository.findByName(name);
+        if (customer.isPresent()) {
+            logger.debug("Customer {} already exist", name);
+            return customer.get();
+        }
+        logger.info("save customer: {}", name);
+        return customerRepository.saveAndFlush(new Customer(name));
+    }
+
+    @Override
     public Customer getById(Long id) {
         logger.info("get customer by id: {}", id);
         Optional<Customer> customer = customerRepository.findById(id);
@@ -30,16 +43,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer save(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Customer name do not entered");
+    public Customer getByIdOrName(Long id, String name) {
+        logger.info("get customer by id: {} or name {}", id, name);
+        Optional<Customer> customerById = (id == null ? Optional.empty() : customerRepository.findById(id));
+        if (! customerById.isPresent()) {
+            Optional<Customer> customerByName = (name == null ? Optional.empty() : customerRepository.findByName(name));
+            if (! customerByName.isPresent())
+                throw new IllegalArgumentException("Customer not found");
+            return customerByName.get();
         }
-        Customer findCustomer = customerRepository.getCustomerByName(name);
-        if (findCustomer != null) {
-            logger.debug("Customer {} already exist", name);
-            return findCustomer;
-        }
-        logger.info("save customer: {}", name);
-        return customerRepository.saveAndFlush(new Customer(name));
+        return customerById.get();
     }
 }

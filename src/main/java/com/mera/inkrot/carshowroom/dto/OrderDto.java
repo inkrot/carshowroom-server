@@ -12,7 +12,7 @@ import java.util.Set;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OrderDto extends Dto implements Serializable {
 
-    private String customerName;
+    private CustomerDto customer;
     private String modelName;
     private String brandName;
     private StatusDto status;
@@ -23,19 +23,19 @@ public class OrderDto extends Dto implements Serializable {
     public OrderDto() {
     }
 
-    public OrderDto(String customerName, String carName, String brandName, Set<OptionDto> options) {
-        this.customerName = customerName;
+    public OrderDto(CustomerDto customer, String carName, String brandName, Set<OptionDto> options) {
+        this.customer = customer;
         this.modelName = carName;
         this.brandName = brandName;
         this.options = options;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public CustomerDto getCustomer() {
+        return customer;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomer(CustomerDto customer) {
+        this.customer = customer;
     }
 
     public String getModelName() {
@@ -73,7 +73,7 @@ public class OrderDto extends Dto implements Serializable {
     public static OrderDto getFromEntity(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
-        orderDto.setCustomerName(order.getCustomer().getName());
+        orderDto.setCustomer(CustomerDto.getFromEntity(order.getCustomer()));
         orderDto.setModelName(order.getCar().getModel());
         orderDto.setBrandName(order.getCar().getBrand().getName());
         orderDto.setStatus(StatusDto.getFromEntity(order.getStatus()));

@@ -1,7 +1,7 @@
 package com.mera.inkrot.carshowroom.rest;
 
 import com.mera.inkrot.carshowroom.dto.OrderDto;
-import com.mera.inkrot.carshowroom.model.Order;
+import com.mera.inkrot.carshowroom.dto.StatusCustomerDto;
 import com.mera.inkrot.carshowroom.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,23 +28,28 @@ public class OrderRestController {
         return new ResponseEntity<>(orderService.update(orderId, orderDto), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") Long orderId) {
+        if (orderId == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        orderService.delete(orderId);
+        return new ResponseEntity<>("Deleted", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
+        return new ResponseEntity<>(orderService.getAll(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "allByStatusAndCustomer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<OrderDto>> getAllOrdersByStatusAndCustomer(@RequestBody StatusCustomerDto statusCustomerDto) {
+        return new ResponseEntity<>(orderService.getAllByStatusAndCustomer(statusCustomerDto.getStatus(), statusCustomerDto.getCustomer()), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<OrderDto> getOrder(@PathVariable("id") Long orderId) {
         if (orderId == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(orderService.getById(orderId), HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<OrderDto>> getAllOrders() {
-        return new ResponseEntity<>(orderService.getAll(), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Order> deleteOrder(@PathVariable("id") Long orderId) {
-        if (orderId == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        orderService.delete(orderId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

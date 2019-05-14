@@ -14,4 +14,6 @@ public interface CustomerService {
 
     @WebMethod(action = "save")
     Customer save(@WebParam(name = "name") String name);
+
+    Customer getByIdOrName(Long id, String name);
 }

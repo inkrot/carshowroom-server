@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Component
@@ -20,18 +17,11 @@ public class CustomerRestController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String test() {
-        return "this is test";
-    }
-
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long customerId) {
-        if (customerId == null)
+    public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long id) {
+        if (id == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        Customer customer = customerService.getById(customerId);
-
+        Customer customer = customerService.getById(id);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 }

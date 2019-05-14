@@ -1,5 +1,6 @@
 package com.mera.inkrot.carshowroom.service.impl;
 
+import com.mera.inkrot.carshowroom.dto.CustomerDto;
 import com.mera.inkrot.carshowroom.dto.OptionDto;
 import com.mera.inkrot.carshowroom.dto.OrderDto;
 import com.mera.inkrot.carshowroom.dto.StatusDto;
@@ -39,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
         Set<Option> options = new HashSet<>();
         for (OptionDto optionDto : orderDto.getOptions())
             options.add(optionService.getById(optionDto.getId()));
-        Customer customer = customerService.save(orderDto.getCustomerName());
+        Customer customer = customerService.save(orderDto.getCustomer().getName());
         Car car = carService.save(orderDto.getModelName(), orderDto.getBrandName());
         Status status = statusService.getById(orderDto.getStatus().getId());
         Order order = orderRepository.save(new Order(id, customer, car, status));
@@ -58,8 +59,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto update(Long id, OrderDto orderDto) {
         OrderDto findOrder = getById(id);
-        if (orderDto.getCustomerName() != null)
-            findOrder.setCustomerName(orderDto.getCustomerName());
+        if (orderDto.getCustomer().getName() != null)
+            findOrder.getCustomer().setName(orderDto.getCustomer().getName());
         if (orderDto.getModelName() != null)
             findOrder.setModelName(orderDto.getModelName());
         if (orderDto.getBrandName() != null)
@@ -74,10 +75,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void delete(Long id) {
+        getById(id);
+        orderRepository.deleteById(id);
+        logger.info("delete order by id: {}", id);
+    }
+
+    @Override
+    public List<OrderDto> getAll() {
+        logger.info("get all orders");
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        for (Order order : orderRepository.findAll())
+            orderDtoList.add(OrderDto.getFromEntity(order));
+        return orderDtoList;
+    }
+
+    @Override
+    public List<OrderDto> getAllByStatusAndCustomer(StatusDto statusDto, CustomerDto customerDto) {
+        logger.info("get orders by status: {} | customer: {}", statusDto, customerDto);
+        Status status = statusService.getByIdOrCode(statusDto.getId(), statusDto.getCode());
+        Customer customer = customerService.getByIdOrName(customerDto.getId(), customerDto.getName());
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        for (Order order : orderRepository.findAllByStatusAndCustomer(status, customer))
+            orderDtoList.add(OrderDto.getFromEntity(order));
+        return orderDtoList;
+    }
+
+    @Override
     public OrderDto getById(Long id) {
         logger.info("get order by id: {}", id);
         Optional<Order> order = orderRepository.findById(id);
-        if(! order.isPresent())
+        if (!order.isPresent())
             throw new IllegalArgumentException("Order not found");
         return OrderDto.getFromEntity(order.get());
     }
@@ -102,21 +130,5 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Set<OptionDto> getOptions(Long orderId) {
         return getById(orderId).getOptions();
-    }
-
-    @Override
-    public void delete(Long id) {
-        getById(id);
-        orderRepository.deleteById(id);
-        logger.info("delete order by id: {}", id);
-    }
-
-    @Override
-    public List<OrderDto> getAll() {
-        logger.info("get all orders");
-        List<OrderDto> orderDtoList = new ArrayList<>();
-        for (Order order : orderRepository.findAll())
-            orderDtoList.add(OrderDto.getFromEntity(order));
-        return orderDtoList;
     }
 }

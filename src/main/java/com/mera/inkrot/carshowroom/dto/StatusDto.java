@@ -44,4 +44,12 @@ public class StatusDto extends Dto implements Serializable {
         statusDto.setName(status.getName());
         return statusDto;
     }
+
+    @Override
+    public String toString() {
+        return "StatusDto{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
