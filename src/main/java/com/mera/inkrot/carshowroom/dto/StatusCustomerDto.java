@@ -1,5 +1,8 @@
 package com.mera.inkrot.carshowroom.dto;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class StatusCustomerDto {
 
     private StatusDto status;

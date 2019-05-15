@@ -4,6 +4,7 @@ import com.mera.inkrot.carshowroom.model.Customer;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CustomerDto extends Dto implements Serializable {
 
+    @XmlElement
     private String name;
 
     public String getName() {

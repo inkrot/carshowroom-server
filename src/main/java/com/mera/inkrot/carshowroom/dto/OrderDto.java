@@ -8,14 +8,22 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@XmlRootElement(name="order")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="order")
 public class OrderDto extends Dto implements Serializable {
 
+    @XmlElement
     private CustomerDto customer;
+
+    @XmlElement
     private String modelName;
+
+    @XmlElement
     private String brandName;
+
+    @XmlElement
     private StatusDto status;
+
     @XmlElementWrapper(name = "options")
     @XmlElement(name = "option")
     private Set<OptionDto> options;
