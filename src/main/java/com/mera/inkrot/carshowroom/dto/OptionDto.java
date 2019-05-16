@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
-@XmlRootElement(name="order")
+@XmlRootElement(name="option")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OptionDto extends Dto implements Serializable {
 
