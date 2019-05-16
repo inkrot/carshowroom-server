@@ -3,6 +3,7 @@ package com.mera.inkrot.carshowroom.config;
 import com.mera.inkrot.carshowroom.service.CustomerService;
 import com.mera.inkrot.carshowroom.service.OrderService;
 import org.apache.cxf.Bus;
+import org.apache.cxf.binding.soap.interceptor.SoapInterceptor;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class CxfConfiguration {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private SoapInterceptor soapInterceptor;
+
     @Bean
     public ServletRegistrationBean servletRegistrationBean(ApplicationContext context) {
         return new ServletRegistrationBean(new CXFServlet(), "/soap/*");
@@ -49,6 +53,7 @@ public class CxfConfiguration {
     public EndpointImpl customerService() {
         Bus bus = (Bus) applicationContext.getBean(Bus.DEFAULT_BUS_ID);
         EndpointImpl endpoint = new EndpointImpl(bus, customerService);
+        endpoint.getInInterceptors().add(soapInterceptor);
         endpoint.publish("/customer");
         return endpoint;
     }
@@ -57,6 +62,7 @@ public class CxfConfiguration {
     public EndpointImpl orderService() {
         Bus bus = (Bus) applicationContext.getBean(Bus.DEFAULT_BUS_ID);
         EndpointImpl endpoint = new EndpointImpl(bus, orderService);
+        endpoint.getInInterceptors().add(soapInterceptor);
         endpoint.publish("/order");
         return endpoint;
     }

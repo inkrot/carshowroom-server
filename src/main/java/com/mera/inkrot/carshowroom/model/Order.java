@@ -72,4 +72,8 @@ public class Order extends BaseEntity {
     public Set<Option> getOptions() {
         return options;
     }
+
+    public void setOptions(Set<Option> options) {
+        this.options = options;
+    }
 }

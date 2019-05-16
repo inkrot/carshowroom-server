@@ -17,6 +17,7 @@ import java.util.*;
 
 @WebService
 @Component
+@org.apache.cxf.interceptor.InFaultInterceptors (interceptors = {"com.mera.inkrot.carshowroom.handler.SoapInterceptor" })
 public class OrderServiceImpl implements OrderService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
@@ -75,10 +76,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         getById(id);
         orderRepository.deleteById(id);
         logger.info("delete order by id: {}", id);
+        return String.format("Order %d deleted", id);
     }
 
     @Override
@@ -92,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAllByStatusAndCustomer(StatusDto statusDto, CustomerDto customerDto) {
-        logger.info("get orders by status: {} | customer: {}", statusDto, customerDto);
+        logger.info("get orders by status: {} & customer: {}", statusDto, customerDto);
         Status status = statusService.getByIdOrCode(statusDto.getId(), statusDto.getCode());
         Customer customer = customerService.getByIdOrName(customerDto.getId(), customerDto.getName());
         List<OrderDto> orderDtoList = new ArrayList<>();

@@ -12,6 +12,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public interface OrderService {
     OrderDto update(@WebParam(name = "id") Long id, @WebParam(name = "order") OrderDto order);
 
     @WebMethod(action = "delete")
-    void delete(@WebParam(name = "id") Long id);
+    String delete(@WebParam(name = "id") Long id);
 
     @WebMethod(action = "getAll")
     @XmlElementWrapper(name = "orders")
@@ -37,17 +38,21 @@ public interface OrderService {
     @WebMethod(action = "getAllByStatusAndCustomer")
     @XmlElementWrapper(name = "orders")
     @XmlElement(name = "order")
-    List<OrderDto> getAllByStatusAndCustomer(StatusDto statusDto, CustomerDto customerDto);
+    List<OrderDto> getAllByStatusAndCustomer(@WebParam(name = "status") StatusDto statusDto, @WebParam(name = "customer") CustomerDto customerDto);
 
     @WebMethod(action = "getById")
     @XmlElement(name = "order")
     OrderDto getById(@WebParam(name = "id") Long id);
 
+    @XmlTransient
     void addOption(Order order, Option option);
 
+    @XmlTransient
     void setOptions(Order order, Set<Option> options);
 
+    @XmlTransient
     void removeOption(Order order, Option option);
 
+    @XmlTransient
     Set<OptionDto> getOptions(Long orderId);
 }
