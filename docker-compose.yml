@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    ports:
+      - 1433:1433
+    volumes:
+      - dbdefault:/var/opt/mssql
+    environment:
+      - SA_PASSWORD=<YourStrong!Passw0rd>
+      - ACCEPT_EULA=Y
+    container_name: db
+  server:
+    image: myorg/myapp:latest
+    build:
+      context: /
+      #context: ./
+      #args:
+      #JAR_FILE: build/libs/carshowroom-server-0.0.1.jar
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - 9000:9000
+    environment:
+      - spring.datasource.url=jdbc:db://db;databaseName=carshowroom
+      - spring.datasource.username=sa
+      - spring.datasource.password=<YourStrong!Passw0rd>
+    container_name: carshowroom
+volumes:
+  dbdefault:
+    external: true

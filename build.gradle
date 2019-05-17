@@ -6,6 +6,8 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.1.RELEASE")
+        
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
     }
 }
 
@@ -15,19 +17,34 @@ plugins {
 }
 
 group 'com.mera.inkrot.carshowroom'
-version '1.0-SNAPSHOT'
-
+version '1'
 
 sourceCompatibility = 1.8
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'com.palantir.docker'
 
-jar {
-    baseName = 'carshowroom-server'
-    version =  '0.0.1'
+
+bootJar {
+    baseName = 'carshowroom'
+    version =  '1'
 }
+
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+docker {
+    name "${project.group}/${bootJar.baseName}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+}
+
+
 
 repositories {
     mavenLocal()
@@ -58,6 +75,14 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-frontend-jaxws
     compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.3.1'
+
+    // https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api
+    compile group: 'javax.xml.ws', name: 'jaxws-api', version: '2.3.1'
+
+    // https://mvnrepository.com/artifact/javax.jws/jsr181-api
+    compile group: 'javax.jws', name: 'jsr181-api', version: '1.0-MR1'
+
+    compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 

@@ -18,7 +18,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EntityScan("com.mera.inkrot.carshowroom.model")
-@ComponentScan({"com.mera.inkrot.carshowroom.service", "com.mera.inkrot.carshowroom.rest"})
+@ComponentScan({"com.mera.inkrot.carshowroom.service", "com.mera.inkrot.carshowroom.rest", "com.mera.inkrot.carshowroom.handler"})
 @EnableJpaRepositories("com.mera.inkrot.carshowroom.repository")
 @ImportResource({ "classpath:META-INF/cxf/cxf.xml" })
 public class CxfConfiguration {
