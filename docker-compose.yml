@@ -7,25 +7,22 @@ services:
     volumes:
       - dbdefault:/var/opt/mssql
     environment:
-      - SA_PASSWORD=<YourStrong!Passw0rd>
+      - SA_PASSWORD=wkFl!16cQd
       - ACCEPT_EULA=Y
     container_name: db
   server:
-    image: myorg/myapp:latest
+    image: com.mera.inkrot.carshowroom/server:latest
     build:
-      context: /
-      #context: ./
-      #args:
-      #JAR_FILE: build/libs/carshowroom-server-0.0.1.jar
+      context: .
       dockerfile: Dockerfile
     depends_on:
       - db
     ports:
       - 9000:9000
     environment:
-      - spring.datasource.url=jdbc:db://db;databaseName=carshowroom
-      - spring.datasource.username=sa
-      - spring.datasource.password=<YourStrong!Passw0rd>
+      - spring.datasource.url=jdbc:sqlserver://db;databaseName=carshowroom
+      - spring.datasource.username=SA
+      - spring.datasource.password=wkFl!16cQd
     container_name: carshowroom
 volumes:
   dbdefault:

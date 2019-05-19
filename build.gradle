@@ -32,19 +32,17 @@ bootJar {
     version =  '1'
 }
 
-
 task unpack(type: Copy) {
     dependsOn bootJar
     from(zipTree(tasks.bootJar.outputs.files.singleFile))
     into("build/dependency")
 }
+
 docker {
     name "${project.group}/${bootJar.baseName}"
     copySpec.from(tasks.unpack.outputs).into("dependency")
     buildArgs(['DEPENDENCY': "dependency"])
 }
-
-
 
 repositories {
     mavenLocal()
