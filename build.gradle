@@ -83,6 +83,9 @@ dependencies {
 
     compile "io.springfox:springfox-swagger-ui:2.9.2"
 
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.1.4.RELEASE'
+
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
