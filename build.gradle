@@ -17,7 +17,6 @@ plugins {
 }
 
 group 'com.mera.inkrot.carshowroom'
-version '1'
 
 sourceCompatibility = 1.8
 
@@ -29,7 +28,7 @@ apply plugin: 'com.palantir.docker'
 
 bootJar {
     baseName = 'carshowroom'
-    version =  '1'
+    version =  '0.1'
 }
 
 task unpack(type: Copy) {
@@ -79,6 +78,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/javax.jws/jsr181-api
     compile group: 'javax.jws', name: 'jsr181-api', version: '1.0-MR1'
+
+    compile "io.springfox:springfox-swagger2:2.9.2"
+
+    compile "io.springfox:springfox-swagger-ui:2.9.2"
 
     compile fileTree(dir: 'libs', include: '*.jar')
 }

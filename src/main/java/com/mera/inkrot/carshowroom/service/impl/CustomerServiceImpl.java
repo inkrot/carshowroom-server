@@ -1,5 +1,6 @@
 package com.mera.inkrot.carshowroom.service.impl;
 
+import com.mera.inkrot.carshowroom.dto.CustomerDto;
 import com.mera.inkrot.carshowroom.model.Customer;
 import com.mera.inkrot.carshowroom.repository.CustomerRepository;
 import com.mera.inkrot.carshowroom.service.CustomerService;
@@ -21,25 +22,25 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerRepository customerRepository;
 
     @Override
-    public Customer save(String name) {
+    public CustomerDto save(String name) {
         if (name == null)
             throw new IllegalArgumentException("Customer name do not entered");
         Optional<Customer> customer = customerRepository.findByName(name);
         if (customer.isPresent()) {
             logger.debug("Customer {} already exist", name);
-            return customer.get();
+            return CustomerDto.getFromEntity(customer.get());
         }
         logger.info("save customer: {}", name);
-        return customerRepository.saveAndFlush(new Customer(name));
+        return CustomerDto.getFromEntity(customerRepository.saveAndFlush(new Customer(name)));
     }
 
     @Override
-    public Customer getById(Long id) {
+    public CustomerDto getById(Long id) {
         logger.info("get customer by id: {}", id);
         Optional<Customer> customer = customerRepository.findById(id);
         if (! customer.isPresent())
             throw new IllegalArgumentException("Customer not found");
-        return customer.get();
+        return CustomerDto.getFromEntity(customer.get());
     }
 
     @Override

@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
         Set<Option> options = new HashSet<>();
         for (OptionDto optionDto : orderDto.getOptions())
             options.add(optionService.getById(optionDto.getId()));
-        Customer customer = customerService.save(orderDto.getCustomer().getName());
+        Customer customer = Customer.getFromDto(customerService.save(orderDto.getCustomer().getName()));
         Car car = carService.save(orderDto.getModelName(), orderDto.getBrandName());
         Status status = statusService.getById(orderDto.getStatus().getId());
         Order order = orderRepository.save(new Order(id, customer, car, status));

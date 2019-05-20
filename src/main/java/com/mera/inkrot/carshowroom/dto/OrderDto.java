@@ -2,28 +2,36 @@ package com.mera.inkrot.carshowroom.dto;
 
 import com.mera.inkrot.carshowroom.model.Option;
 import com.mera.inkrot.carshowroom.model.Order;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@ApiModel(description = "Class for transferring data of Order entity.")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="order")
 public class OrderDto extends Dto implements Serializable {
 
+    @ApiModelProperty(notes = "Customer of the Order.", required = true)
     @XmlElement
     private CustomerDto customer;
 
+    @ApiModelProperty(notes = "Name of the car model.", example = "camry", required = true)
     @XmlElement
     private String modelName;
 
+    @ApiModelProperty(notes = "Name of the car brand.", example = "Toyota", required = true)
     @XmlElement
     private String brandName;
 
+    @ApiModelProperty(notes = "Status of the Order.")
     @XmlElement
     private StatusDto status;
 
+    @ApiModelProperty(notes = "Options collection of the Order.")
     @XmlElementWrapper(name = "options")
     @XmlElement(name = "option")
     private Set<OptionDto> options;

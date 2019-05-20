@@ -1,5 +1,7 @@
 package com.mera.inkrot.carshowroom.model;
 
+import com.mera.inkrot.carshowroom.dto.CustomerDto;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -22,5 +24,12 @@ public class Customer extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static Customer getFromDto(CustomerDto customerDto) {
+        Customer customer = new Customer();
+        customer.setId(customerDto.getId());
+        customer.setName(customerDto.getName());
+        return customer;
     }
 }

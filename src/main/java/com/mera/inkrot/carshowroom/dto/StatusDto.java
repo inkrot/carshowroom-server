@@ -1,6 +1,7 @@
 package com.mera.inkrot.carshowroom.dto;
 
 import com.mera.inkrot.carshowroom.model.Status;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -8,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
+@ApiModel(description = "Class for transferring data of Status entity.")
 @XmlRootElement(name="status")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StatusDto extends Dto implements Serializable {
