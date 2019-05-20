@@ -1,4 +1,4 @@
-# carshowroom-server
+# Carshowroom Server
 
 It's a server application for Practical task.
 
