@@ -54,7 +54,10 @@ curl http://localhost:9000
 
 # Clients
 #### REST-Client: https://github.com/inkrot/carshowroom-restclient
+- Documentation: http://localhost:9000/swagger-ui.html
+
 #### SOAP-Client: https://github.com/inkrot/carshowroom-soapclient
+- Services list: http://localhost:9000/soap
 
 # Diagram of database:
 ![alt text](https://raw.githubusercontent.com/inkrot/carshowroom-server/master/carshowroom-er.png)
