@@ -2,6 +2,7 @@ package com.mera.inkrot.carshowroom.dto;
 
 import com.mera.inkrot.carshowroom.model.Status;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -14,9 +15,11 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StatusDto extends Dto implements Serializable {
 
+    @ApiModelProperty(notes = "Code of the Status.", example = "BEING_PROCESSED")
     @XmlElement
     private String code;
 
+    @ApiModelProperty(notes = "Name of the Status.", example = "выполнен")
     @XmlElement
     private String name;
 
