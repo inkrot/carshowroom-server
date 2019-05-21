@@ -29,6 +29,7 @@ public class CustomerDto extends Dto implements Serializable {
     }
 
     public static CustomerDto getFromEntity(Customer customer) {
+        if (customer == null) return null;
         CustomerDto customerDto = new CustomerDto();
         customerDto.setId(customer.getId());
         customerDto.setName(customer.getName());

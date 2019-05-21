@@ -47,6 +47,7 @@ public class StatusDto extends Dto implements Serializable {
     }
 
     public static StatusDto getFromEntity(Status status) {
+        if (status == null) return null;
         StatusDto statusDto = new StatusDto();
         statusDto.setId(status.getId());
         statusDto.setCode(status.getCode());

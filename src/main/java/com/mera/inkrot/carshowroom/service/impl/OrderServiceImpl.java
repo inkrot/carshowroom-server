@@ -5,6 +5,7 @@ import com.mera.inkrot.carshowroom.dto.OptionDto;
 import com.mera.inkrot.carshowroom.dto.OrderDto;
 import com.mera.inkrot.carshowroom.dto.StatusDto;
 import com.mera.inkrot.carshowroom.model.*;
+import com.mera.inkrot.carshowroom.repository.CustomerRepository;
 import com.mera.inkrot.carshowroom.repository.OrderRepository;
 import com.mera.inkrot.carshowroom.service.*;
 import org.slf4j.Logger;
@@ -26,6 +27,9 @@ public class OrderServiceImpl implements OrderService {
     OrderRepository orderRepository;
 
     @Autowired
+    CustomerRepository customerRepository;
+
+    @Autowired
     CustomerService customerService;
 
     @Autowired
@@ -41,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
         Set<Option> options = new HashSet<>();
         for (OptionDto optionDto : orderDto.getOptions())
             options.add(optionService.getById(optionDto.getId()));
-        Customer customer = Customer.getFromDto(customerService.save(orderDto.getCustomer().getName()));
+        Customer customer = customerRepository.saveAndFlush(new Customer(orderDto.getCustomer().getName()));
         Car car = carService.save(orderDto.getModelName(), orderDto.getBrandName());
         Status status = statusService.getById(orderDto.getStatus().getId());
         Order order = orderRepository.save(new Order(id, customer, car, status));
@@ -51,7 +55,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto save(OrderDto orderDto) {
-        orderDto.setStatus(StatusDto.getFromEntity(statusService.getById(1L)));
+        //orderDto.setStatus(StatusDto.getFromEntity(statusService.getById(1L)));
+        orderDto.setStatus(new StatusDto(1L));
         OrderDto order = saveOrUpdate(null, orderDto);
         logger.info("save order: {}", order.getId());
         return order;
