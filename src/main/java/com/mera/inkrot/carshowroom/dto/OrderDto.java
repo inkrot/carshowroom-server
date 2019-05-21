@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @ApiModel(description = "Class for transferring data of Order entity.")
@@ -98,5 +99,22 @@ public class OrderDto extends Dto implements Serializable {
             options.add(OptionDto.getFromEntity(option));
         orderDto.setOptions(options);
         return orderDto;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderDto orderDto = (OrderDto) o;
+        return Objects.equals(customer, orderDto.customer) &&
+                Objects.equals(modelName, orderDto.modelName) &&
+                Objects.equals(brandName, orderDto.brandName) &&
+                Objects.equals(status, orderDto.status) &&
+                Objects.equals(options, orderDto.options);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customer, modelName, brandName, status, options);
     }
 }

@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Objects;
 
 @ApiModel(description = "Class for transferring data of Option entity.")
 @XmlRootElement(name="option")
@@ -32,5 +33,18 @@ public class OptionDto extends Dto implements Serializable {
         optionDto.setId(option.getId());
         optionDto.setName(option.getName());
         return optionDto;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OptionDto optionDto = (OptionDto) o;
+        return Objects.equals(name, optionDto.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Objects;
 
 @ApiModel(description = "Class for transferring data of Status entity.")
 @XmlRootElement(name="status")
@@ -59,5 +60,19 @@ public class StatusDto extends Dto implements Serializable {
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StatusDto statusDto = (StatusDto) o;
+        return Objects.equals(code, statusDto.code) &&
+                Objects.equals(name, statusDto.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, name);
     }
 }

@@ -18,9 +18,12 @@ import java.util.List;
 @RequestMapping("/rest/order")
 @Api(description = "Set of endpoints for save, update, delete, get the orders.")
 public class OrderRestController {
+    private OrderService orderService;
 
     @Autowired
-    private OrderService orderService;
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @ApiOperation("Save Order to the System.")
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -55,11 +58,12 @@ public class OrderRestController {
         return new ResponseEntity<>(orderService.getAllByStatusAndCustomer(statusCustomerDto.getStatus(), statusCustomerDto.getCustomer()), HttpStatus.OK);
     }
 
-    @ApiOperation("Get Order to the System.")
+    @ApiOperation("Get Order in the System.")
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<OrderDto> getOrder(@ApiParam("Id of the Order to be obtained.") @PathVariable("id") Long orderId) {
         if (orderId == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(orderService.getById(orderId), HttpStatus.OK);
+        OrderDto orderDto = orderService.getById(orderId);
+        return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 }

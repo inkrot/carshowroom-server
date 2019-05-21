@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Objects;
 
 @ApiModel(description = "Class for transferring data of Customer entity.")
 @XmlRootElement(name="customer")
@@ -39,5 +40,18 @@ public class CustomerDto extends Dto implements Serializable {
         return "CustomerDto{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerDto that = (CustomerDto) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
