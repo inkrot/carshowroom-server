@@ -17,11 +17,15 @@ public class CarServiceImpl implements CarService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    @Autowired
     private CarRepository carRepository;
 
-    @Autowired
     private BrandService brandService;
+
+    @Autowired
+    public CarServiceImpl(CarRepository carRepository, BrandService brandService) {
+        this.carRepository = carRepository;
+        this.brandService = brandService;
+    }
 
     @Override
     public Car save(String modelName, String brandName) {

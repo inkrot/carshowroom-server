@@ -119,4 +119,16 @@ public class OrderDto extends Dto implements Serializable {
     public int hashCode() {
         return Objects.hash(customer, modelName, brandName, status, options);
     }
+
+    @Override
+    public String toString() {
+        return "OrderDto{" +
+                "id=" + getId() + '\'' +
+                ", customer=" + customer +
+                ", modelName='" + modelName + '\'' +
+                ", brandName='" + brandName + '\'' +
+                ", status=" + status +
+                ", options=" + options +
+                '}';
+    }
 }

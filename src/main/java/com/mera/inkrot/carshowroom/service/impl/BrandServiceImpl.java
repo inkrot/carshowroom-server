@@ -16,11 +16,15 @@ public class BrandServiceImpl implements BrandService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    @Autowired
     private BrandRepository brandRepository;
 
-    @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    public BrandServiceImpl(BrandRepository brandRepository, CarRepository carRepository) {
+        this.brandRepository = brandRepository;
+        this.carRepository = carRepository;
+    }
 
     @Override
     public Brand getById(Long id) {

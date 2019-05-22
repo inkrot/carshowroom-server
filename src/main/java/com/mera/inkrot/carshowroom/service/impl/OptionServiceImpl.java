@@ -15,8 +15,12 @@ public class OptionServiceImpl implements OptionService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
+    private OptionRepository optionRepository;
+
     @Autowired
-    OptionRepository optionRepository;
+    public OptionServiceImpl(OptionRepository optionRepository) {
+        this.optionRepository = optionRepository;
+    }
 
     @Override
     public Option getById(Long id) {

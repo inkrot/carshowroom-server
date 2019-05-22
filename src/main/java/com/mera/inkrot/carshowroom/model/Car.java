@@ -9,7 +9,7 @@ public class Car extends BaseEntity {
     private String model;
 
     @JoinColumn(name = "brand_id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Brand brand;
 
     public Car() {

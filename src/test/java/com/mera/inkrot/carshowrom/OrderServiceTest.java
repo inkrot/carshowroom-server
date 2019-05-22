@@ -1,47 +1,88 @@
 package com.mera.inkrot.carshowrom;
 
+import com.mera.inkrot.carshowroom.Application;
 import com.mera.inkrot.carshowroom.dto.CustomerDto;
 import com.mera.inkrot.carshowroom.dto.OrderDto;
+import com.mera.inkrot.carshowroom.model.Brand;
+import com.mera.inkrot.carshowroom.model.Car;
+import com.mera.inkrot.carshowroom.model.Customer;
 import com.mera.inkrot.carshowroom.model.Order;
-import com.mera.inkrot.carshowroom.repository.OrderRepository;
-import com.mera.inkrot.carshowroom.service.impl.OrderServiceImpl;
+import com.mera.inkrot.carshowroom.repository.*;
+import com.mera.inkrot.carshowroom.service.*;
+import com.mera.inkrot.carshowroom.service.impl.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestConfig.class })
+@ActiveProfiles("test")
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = Application.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = NONE)
 public class OrderServiceTest {
 
-    @Mock
+    @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private StatusRepository statusRepository;
+    @Autowired
+    private CarRepository carRepository;
+    @Autowired
+    private BrandRepository brandRepository;
+    @Autowired
+    private OptionRepository optionRepository;
 
-    @InjectMocks
+    private CustomerService customerService;
+    private BrandService brandService;
+    private CarService carService;
+    private OptionService optionService;
+    private StatusService statusService;
     private OrderServiceImpl orderService;
+
+    @Before
+    public void setUp() {
+        customerService = new CustomerServiceImpl(customerRepository);
+        brandService = new BrandServiceImpl(brandRepository, carRepository);
+        carService = new CarServiceImpl(carRepository, brandService);
+        optionService = new OptionServiceImpl(optionRepository);
+        statusService = new StatusServiceImpl(statusRepository);
+        orderService = new OrderServiceImpl(orderRepository, customerRepository, customerService, carService, optionService, statusService);
+    }
 
     @Test
     public void whenGetByIdThenReturnOrderDto() {
-        Long id = 1L;
+        //given
+        Order order = new Order();
+        order.setCustomer(new Customer("Hello"));
+        order.setCar(new Car("Model", new Brand("Brand")));
+        order.setStatus(statusRepository.getOne(1L));
+        orderRepository.save(order);
 
-        when(orderRepository.getOne(anyLong())).thenReturn(new Order());
+        //when
+        OrderDto obtained = orderService.getById(order.getId());
 
-        OrderDto obtained = orderService.getById(id);
-
-        assertThat(obtained.getId()).isSameAs(id);
+        //then
+        assertThat(obtained, is(equalTo(OrderDto.getFromEntity(order))));
     }
 
     @Test
     public void whenSaveOrderDtoThenReturnSavedOrderDto() {
+        //given
         OrderDto orderDto = new OrderDto();
         CustomerDto customerDto = new CustomerDto();
         customerDto.setName("New Customer");
@@ -50,10 +91,10 @@ public class OrderServiceTest {
         orderDto.setBrandName("new brand");
         orderDto.setOptions(Collections.emptySet());
 
-        when(orderRepository.save(any(Order.class))).thenReturn(new Order());
-
+        //when
         OrderDto saved = orderService.save(orderDto);
 
-        assertThat(saved).isSameAs(orderDto);
+        //then
+        assertThat(saved, is(equalTo(orderDto)));
     }
 }

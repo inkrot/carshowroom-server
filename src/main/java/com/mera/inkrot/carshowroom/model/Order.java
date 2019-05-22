@@ -11,15 +11,15 @@ import java.util.Set;
 @XmlRootElement(name = "order")
 public class Order extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "status_id")
     private Status status;
 
@@ -75,5 +75,15 @@ public class Order extends BaseEntity {
 
     public void setOptions(Set<Option> options) {
         this.options = options;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "customer=" + customer +
+                ", car=" + car +
+                ", status=" + status +
+                ", options=" + options +
+                '}';
     }
 }

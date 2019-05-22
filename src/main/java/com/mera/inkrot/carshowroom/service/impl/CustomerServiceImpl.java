@@ -18,8 +18,15 @@ public class CustomerServiceImpl implements CustomerService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
+    private CustomerRepository customerRepository;
+
     @Autowired
-    CustomerRepository customerRepository;
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    public CustomerServiceImpl() {
+    }
 
     @Override
     public CustomerDto save(String name) {

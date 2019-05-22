@@ -15,8 +15,12 @@ public class StatusServiceImpl implements StatusService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
+    private StatusRepository statusRepository;
+
     @Autowired
-    StatusRepository statusRepository;
+    public StatusServiceImpl(StatusRepository statusRepository) {
+        this.statusRepository = statusRepository;
+    }
 
     @Override
     public Status getById(Long id) {

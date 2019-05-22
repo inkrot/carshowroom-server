@@ -23,29 +23,38 @@ public class OrderServiceImpl implements OrderService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    @Autowired
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
+
+    private CustomerRepository customerRepository;
+
+    private CustomerService customerService;
+
+    private CarService carService;
+
+    private OptionService optionService;
+
+    private StatusService statusService;
 
     @Autowired
-    CustomerRepository customerRepository;
+    public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository, CustomerService customerService, CarService carService, OptionService optionService, StatusService statusService) {
+        this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+        this.customerService = customerService;
+        this.carService = carService;
+        this.optionService = optionService;
+        this.statusService = statusService;
+    }
 
-    @Autowired
-    CustomerService customerService;
-
-    @Autowired
-    CarService carService;
-
-    @Autowired
-    OptionService optionService;
-
-    @Autowired
-    StatusService statusService;
+    public OrderServiceImpl() {
+    }
 
     private OrderDto saveOrUpdate(Long id, OrderDto orderDto) {
         Set<Option> options = new HashSet<>();
+        if (orderDto.getOptions() == null) orderDto.setOptions(Collections.EMPTY_SET);
         for (OptionDto optionDto : orderDto.getOptions())
             options.add(optionService.getById(optionDto.getId()));
-        Customer customer = customerRepository.saveAndFlush(new Customer(orderDto.getCustomer().getName()));
+        String customerName = orderDto.getCustomer() == null ? "" : orderDto.getCustomer().getName();
+        Customer customer = customerRepository.saveAndFlush(new Customer(customerName));
         Car car = carService.save(orderDto.getModelName(), orderDto.getBrandName());
         Status status = statusService.getById(orderDto.getStatus().getId());
         Order order = orderRepository.save(new Order(id, customer, car, status));
@@ -55,8 +64,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto save(OrderDto orderDto) {
-        //orderDto.setStatus(StatusDto.getFromEntity(statusService.getById(1L)));
-        orderDto.setStatus(new StatusDto(1L));
+        if (orderDto == null) orderDto = new OrderDto();
+        orderDto.setStatus(StatusDto.getFromEntity(statusService.getById(1L)));
         OrderDto order = saveOrUpdate(null, orderDto);
         logger.info("save order: {}", order.getId());
         return order;
