@@ -1,6 +1,6 @@
 package com.mera.inkrot.carshowrom.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mera.inkrot.carshowrom.util.JsonFormatter;
 import com.mera.inkrot.carshowroom.Application;
 import com.mera.inkrot.carshowroom.dto.CustomerDto;
 import com.mera.inkrot.carshowroom.dto.OrderDto;
@@ -41,14 +41,6 @@ public class OrderRestControllerTest {
 
     private static final String BASE_URL = "/rest/order/";
 
-    public static String getJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Test
     public void saveOrderTest() throws Exception {
         OrderDto orderDto = new OrderDto();
@@ -61,11 +53,11 @@ public class OrderRestControllerTest {
         ResponseEntity<OrderDto> re = new ResponseEntity<>(orderDto, HttpStatus.CREATED);
         given(orderRestController.saveOrder(orderDto)).willReturn(re);
         mvc.perform(post(BASE_URL)
-                .content(getJsonString(orderDto))
+                .content(JsonFormatter.getJsonString(orderDto))
                 .contentType(APPLICATION_JSON_UTF8_VALUE)
                 .accept(APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(getJsonString(orderDto)));
+                .andExpect(content().json(JsonFormatter.getJsonString(orderDto)));
     }
 
     @Test
@@ -81,11 +73,11 @@ public class OrderRestControllerTest {
         ResponseEntity<OrderDto> re = new ResponseEntity<>(orderDto, HttpStatus.OK);
         given(orderRestController.updateOrder(id, orderDto)).willReturn(re);
         mvc.perform(post(BASE_URL + id)
-                .content(getJsonString(orderDto))
+                .content(JsonFormatter.getJsonString(orderDto))
                 .contentType(APPLICATION_JSON_UTF8_VALUE)
                 .accept(APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().json(getJsonString(orderDto)));
+                .andExpect(content().json(JsonFormatter.getJsonString(orderDto)));
     }
 
     @Test
@@ -139,7 +131,7 @@ public class OrderRestControllerTest {
         ResponseEntity<List<OrderDto>> re = new ResponseEntity<>(orders, HttpStatus.OK);
         given(orderRestController.getAllOrdersByStatusAndCustomer(statusCustomerDto)).willReturn(re);
         mvc.perform(post(BASE_URL + "allByStatusAndCustomer")
-                .content(getJsonString(statusCustomerDto))
+                .content(JsonFormatter.getJsonString(statusCustomerDto))
                 .contentType(APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -160,6 +152,6 @@ public class OrderRestControllerTest {
         mvc.perform(get(BASE_URL + id)
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(getJsonString(orderDto)));
+                .andExpect(content().json(JsonFormatter.getJsonString(orderDto)));
     }
 }

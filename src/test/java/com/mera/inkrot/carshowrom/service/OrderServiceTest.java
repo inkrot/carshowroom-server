@@ -63,7 +63,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void whenSaveOrderDtoThenReturnSavedOrderDto() {
+    public void whenSaveThenReturnSavedOrderDto() {
         //given
         OrderDto orderDto = new OrderDto();
         CustomerDto customerDto = new CustomerDto();
@@ -81,7 +81,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void whenUpdateOrderDtoThenReturnSavedOrderDto() {
+    public void whenUpdateThenReturnUpdatedOrderDto() {
         //given
         Order order = new Order();
         order.setCustomer(new Customer("Customer"));

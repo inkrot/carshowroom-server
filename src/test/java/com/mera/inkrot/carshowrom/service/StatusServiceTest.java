@@ -57,6 +57,6 @@ public class StatusServiceTest {
         Status obtained = statusService.getByIdOrCode(id, code);
 
         //then
-        assertThat(obtained.getCode(), is(equalTo(obtained.getCode())));
+        assertThat(obtained.getCode(), is(equalTo(code)));
     }
 }

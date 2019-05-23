@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class StatusServiceImpl implements StatusService {
 
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private StatusRepository statusRepository;
 

@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class BrandServiceImpl implements BrandService {
 
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private BrandRepository brandRepository;
 
@@ -50,10 +50,11 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         getById(id);
         carRepository.deleteCarByBrandId(id);
         brandRepository.deleteById(id);
         logger.info("delete brand by id: {}", id);
+        return "Deleted";
     }
 }

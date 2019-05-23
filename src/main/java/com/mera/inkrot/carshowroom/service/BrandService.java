@@ -8,5 +8,5 @@ public interface BrandService {
 
     Brand save(String name);
 
-    void delete(Long id);
+    String delete(Long id);
 }

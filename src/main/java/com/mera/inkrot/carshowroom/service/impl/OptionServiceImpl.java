@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class OptionServiceImpl implements OptionService {
 
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private OptionRepository optionRepository;
 

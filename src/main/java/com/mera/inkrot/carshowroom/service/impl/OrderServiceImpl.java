@@ -21,7 +21,7 @@ import java.util.*;
 @org.apache.cxf.interceptor.InFaultInterceptors (interceptors = {"com.mera.inkrot.carshowroom.handler.SoapInterceptor" })
 public class OrderServiceImpl implements OrderService {
 
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private OrderRepository orderRepository;
 

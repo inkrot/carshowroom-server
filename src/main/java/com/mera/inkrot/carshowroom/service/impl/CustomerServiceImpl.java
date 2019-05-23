@@ -16,7 +16,7 @@ import java.util.Optional;
 @Component
 public class CustomerServiceImpl implements CustomerService {
 
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private CustomerRepository customerRepository;
 

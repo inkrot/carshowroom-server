@@ -15,7 +15,7 @@ import java.util.Collection;
 @Service
 public class CarServiceImpl implements CarService {
 
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private CarRepository carRepository;
 
