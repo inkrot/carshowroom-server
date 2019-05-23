@@ -1,4 +1,4 @@
-package com.mera.inkrot.carshowrom;
+package com.mera.inkrot.carshowrom.service;
 
 import com.mera.inkrot.carshowroom.Application;
 import com.mera.inkrot.carshowroom.dto.CustomerDto;
@@ -50,7 +50,7 @@ public class OrderServiceTest {
     private CarService carService;
     private OptionService optionService;
     private StatusService statusService;
-    private OrderServiceImpl orderService;
+    private OrderService orderService;
 
     @Before
     public void setUp() {

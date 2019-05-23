@@ -1,4 +1,4 @@
-package com.mera.inkrot.carshowrom;
+package com.mera.inkrot.carshowrom.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mera.inkrot.carshowroom.Application;
