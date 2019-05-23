@@ -80,10 +80,14 @@ public class OrderServiceImpl implements OrderService {
             findOrder.setModelName(orderDto.getModelName());
         if (orderDto.getBrandName() != null)
             findOrder.setBrandName(orderDto.getBrandName());
-        if (orderDto.getStatus().getId() != null)
-            findOrder.setStatus(orderDto.getStatus());
-        if (orderDto.getOptions().size() > 0)
-            findOrder.setOptions(orderDto.getOptions());
+        StatusDto status = orderDto.getStatus();
+        if (status != null)
+            if (status.getId() != null)
+                findOrder.setStatus(status);
+        Set<OptionDto> options = orderDto.getOptions();
+        if (options != null)
+            if (options.size() > 0)
+                findOrder.setOptions(orderDto.getOptions());
         OrderDto order = saveOrUpdate(id, findOrder);
         logger.info("update order: {}", order.getId());
         return order;
@@ -94,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
         getById(id);
         orderRepository.deleteById(id);
         logger.info("delete order by id: {}", id);
-        return String.format("Order %d deleted", id);
+        return "Deleted";
     }
 
     @Override
@@ -136,15 +140,5 @@ public class OrderServiceImpl implements OrderService {
     public void setOptions(Order order, Set<Option> options) {
         for (Option option : options)
             addOption(order, option);
-    }
-
-    @Override
-    public void removeOption(Order order, Option option) {
-        // TODO
-    }
-
-    @Override
-    public Set<OptionDto> getOptions(Long orderId) {
-        return getById(orderId).getOptions();
     }
 }

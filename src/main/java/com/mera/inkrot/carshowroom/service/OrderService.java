@@ -1,7 +1,6 @@
 package com.mera.inkrot.carshowroom.service;
 
 import com.mera.inkrot.carshowroom.dto.CustomerDto;
-import com.mera.inkrot.carshowroom.dto.OptionDto;
 import com.mera.inkrot.carshowroom.dto.OrderDto;
 import com.mera.inkrot.carshowroom.dto.StatusDto;
 import com.mera.inkrot.carshowroom.model.Option;
@@ -49,10 +48,4 @@ public interface OrderService {
 
     @XmlTransient
     void setOptions(Order order, Set<Option> options);
-
-    @XmlTransient
-    void removeOption(Order order, Option option);
-
-    @XmlTransient
-    Set<OptionDto> getOptions(Long orderId);
 }

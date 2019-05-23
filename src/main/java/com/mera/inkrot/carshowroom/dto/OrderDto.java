@@ -89,17 +89,19 @@ public class OrderDto extends Dto implements Serializable {
 
     public static OrderDto getFromEntity(Order order) {
         OrderDto orderDto = new OrderDto();
-        orderDto.setId(order.getId());
-        orderDto.setCustomer(CustomerDto.getFromEntity(order.getCustomer()));
-        if (order.getCar() != null) {
-            orderDto.setModelName(order.getCar().getModel());
-            if (order.getCar().getBrand() != null) orderDto.setBrandName(order.getCar().getBrand().getName());
+        if (order != null) {
+            orderDto.setId(order.getId());
+            orderDto.setCustomer(CustomerDto.getFromEntity(order.getCustomer()));
+            if (order.getCar() != null) {
+                orderDto.setModelName(order.getCar().getModel());
+                if (order.getCar().getBrand() != null) orderDto.setBrandName(order.getCar().getBrand().getName());
+            }
+            orderDto.setStatus(StatusDto.getFromEntity(order.getStatus()));
+            Set<OptionDto> options = new HashSet<>();
+            for (Option option : order.getOptions())
+                options.add(OptionDto.getFromEntity(option));
+            orderDto.setOptions(options);
         }
-        orderDto.setStatus(StatusDto.getFromEntity(order.getStatus()));
-        Set<OptionDto> options = new HashSet<>();
-        for (Option option : order.getOptions())
-            options.add(OptionDto.getFromEntity(option));
-        orderDto.setOptions(options);
         return orderDto;
     }
 

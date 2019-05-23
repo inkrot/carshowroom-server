@@ -42,8 +42,7 @@ public class OrderRestController {
     public ResponseEntity<String> deleteOrder(@ApiParam("Id of the Order to be deleted.") @PathVariable("id") Long orderId) {
         if (orderId == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        orderService.delete(orderId);
-        return new ResponseEntity<>("Deleted", HttpStatus.OK);
+        return new ResponseEntity<>(orderService.delete(orderId), HttpStatus.OK);
     }
 
     @ApiOperation("Returns list of all Orders in the system.")

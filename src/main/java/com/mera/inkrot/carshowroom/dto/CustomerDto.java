@@ -20,6 +20,13 @@ public class CustomerDto extends Dto implements Serializable {
     @XmlElement
     private String name;
 
+    public CustomerDto(String name) {
+        this.name = name;
+    }
+
+    public CustomerDto() {
+    }
+
     public String getName() {
         return name;
     }

@@ -11,8 +11,12 @@ public class Option extends BaseEntity {
 
     private String name;
 
-    //@ManyToMany(mappedBy = "options", fetch = FetchType.LAZY)
-    //private Set<Order> orders = new HashSet<>();
+    public Option(Long id) {
+        setId(id);
+    }
+
+    public Option() {
+    }
 
     public String getName() {
         return name;
@@ -20,5 +24,12 @@ public class Option extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Option{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }
