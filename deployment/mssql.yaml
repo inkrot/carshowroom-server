@@ -24,7 +24,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mssql
-                  key: wkFl1.6c-Qd23
+                  key: wkFl1.6c-Qd
           volumeMounts:
             - name: mssql-data
               mountPath: /var/opt/mssql
