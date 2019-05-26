@@ -23,8 +23,9 @@ spec:
             - name: MSSQL_SA_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mssql
-                  key: wkFl1.6c-Qd
+                  name: mssql-secrets
+                  key: SA_PASSWORD
+                  # wkFl1.6c-Qd
           volumeMounts:
             - name: mssql-data
               mountPath: /var/opt/mssql
