@@ -1,11 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
-
 metadata:
   name: carshowroom
   labels:
     app: carshowroom
-
 spec:
   replicas: 3
   template:
@@ -33,12 +31,10 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-
 metadata:
   name: carshowroom
   labels:
     app: carshowroom
-
 spec:
   type: LoadBalancer
   ports:

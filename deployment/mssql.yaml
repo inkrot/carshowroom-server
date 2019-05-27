@@ -1,9 +1,22 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mssql-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: mssql
+  labels:
+    app: mssql
 spec:
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
@@ -46,3 +59,14 @@ spec:
       port: 1433
       targetPort: 1433
   type: LoadBalancer
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: mssql-allow-external
+spec:
+  podSelector:
+    matchLabels:
+      app: mssql
+  ingress:
+    - from: []
