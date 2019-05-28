@@ -20,6 +20,12 @@ public class OptionDto extends Dto implements Serializable {
     @XmlElement
     private String name;
 
+    public OptionDto() { }
+
+    public OptionDto(Long id) {
+        setId(id);
+    }
+
     public String getName() {
         return name;
     }
@@ -36,6 +42,14 @@ public class OptionDto extends Dto implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "OptionDto{" +
+                "id='" + getId() + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -45,6 +59,6 @@ public class OptionDto extends Dto implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(getId(), name);
     }
 }

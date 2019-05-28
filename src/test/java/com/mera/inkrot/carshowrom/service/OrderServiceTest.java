@@ -2,6 +2,7 @@ package com.mera.inkrot.carshowrom.service;
 
 import com.mera.inkrot.carshowroom.Application;
 import com.mera.inkrot.carshowroom.dto.CustomerDto;
+import com.mera.inkrot.carshowroom.dto.OptionDto;
 import com.mera.inkrot.carshowroom.dto.OrderDto;
 import com.mera.inkrot.carshowroom.dto.StatusDto;
 import com.mera.inkrot.carshowroom.model.*;
@@ -11,6 +12,8 @@ import com.mera.inkrot.carshowroom.service.impl.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +35,8 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
 public class OrderServiceTest {
+
+    private Logger logger = LoggerFactory.getLogger(OrderServiceTest.class);
 
     @Autowired
     private OrderRepository orderRepository;
@@ -71,13 +77,20 @@ public class OrderServiceTest {
         orderDto.setCustomer(customerDto);
         orderDto.setModelName("new model");
         orderDto.setBrandName("new brand");
-        orderDto.setOptions(Collections.emptySet());
+        Set<OptionDto> options = new HashSet<>();
+        options.add(new OptionDto(4L));
+        options.add(new OptionDto(3L));
+        orderDto.setOptions(options);
 
         //when
         OrderDto saved = orderService.save(orderDto);
 
         //then
-        assertThat(saved, is(equalTo(orderDto)));
+        assertThat(saved.getCustomer(), is(equalTo(orderDto.getCustomer())));
+        assertThat(saved.getModelName(), is(equalTo(orderDto.getModelName())));
+        assertThat(saved.getBrandName(), is(equalTo(orderDto.getBrandName())));
+        assertThat(saved.getStatus().getId(), is(equalTo(orderDto.getStatus().getId())));
+        assertThat(saved.getOptions(), is(equalTo(orderDto.getOptions())));
     }
 
     @Test
@@ -194,7 +207,9 @@ public class OrderServiceTest {
     @Test
     public void whenSetOptionsThenSetOptionsToOrder() {
         //given
-        Set<Option> options = Collections.singleton(optionRepository.getOne(1L));
+        Set<Option> options = new HashSet<>();
+        options.add(optionRepository.getOne(1L));
+        options.add(optionRepository.getOne(3L));
         Order order = new Order();
         order.setCustomer(new Customer("Test Customer"));
         order.setCar(new Car("Model", new Brand("Brand")));

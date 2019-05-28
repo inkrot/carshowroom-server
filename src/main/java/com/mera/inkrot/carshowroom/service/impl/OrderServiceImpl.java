@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
         Customer customer = customerRepository.saveAndFlush(new Customer(customerName));
         Car car = carService.save(orderDto.getModelName(), orderDto.getBrandName());
         Status status = statusService.getById(orderDto.getStatus().getId());
-        Order order = orderRepository.save(new Order(id, customer, car, status));
+        Order order = orderRepository.saveAndFlush(new Order(id, customer, car, status));
         setOptions(order, options);
         return OrderDto.getFromEntity(order);
     }
