@@ -54,7 +54,8 @@ public class OptionDto extends Dto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OptionDto optionDto = (OptionDto) o;
-        return Objects.equals(name, optionDto.name);
+        return Objects.equals(getId(), optionDto.getId())
+                && Objects.equals(name, optionDto.name);
     }
 
     @Override

@@ -90,7 +90,7 @@ public class OrderServiceTest {
         assertThat(saved.getModelName(), is(equalTo(orderDto.getModelName())));
         assertThat(saved.getBrandName(), is(equalTo(orderDto.getBrandName())));
         assertThat(saved.getStatus().getId(), is(equalTo(orderDto.getStatus().getId())));
-        assertThat(saved.getOptions(), is(equalTo(orderDto.getOptions())));
+        assertThat(saved.getOptions().size(), is(equalTo(orderDto.getOptions().size())));
     }
 
     @Test
