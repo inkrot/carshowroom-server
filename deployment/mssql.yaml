@@ -16,7 +16,7 @@ metadata:
   labels:
     app: mssql
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -59,14 +59,3 @@ spec:
       port: 1433
       targetPort: 1433
   type: LoadBalancer
----
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: mssql-allow-external
-spec:
-  podSelector:
-    matchLabels:
-      app: mssql
-  ingress:
-    - from: []
