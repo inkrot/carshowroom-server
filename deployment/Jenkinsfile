@@ -1,68 +1,34 @@
-def label = "worker-${UUID.randomUUID().toString()}"
+node {
+    def projectId = 'carshowroom-241614'
+    def appName = 'carshowroom'
+    def namespace = 'default'
+    def imageVersion = "v0.0.${env.BUILD_NUMBER}"
+    def buildName = "gcr.io/${projectId}/${appName}"
+    def buildTag = "${imageVersion}-BUILD-SNAPSHOT"
+    def imageName = "${buildName}:${buildTag}"
 
-podTemplate(label: label, containers: [
-  containerTemplate(name: 'gradle', image: 'gradle:4.5.1-jdk9', command: 'cat', ttyEnabled: true),
-  containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
-  containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.8', command: 'cat', ttyEnabled: true),
-  containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true)
-],
-volumes: [
-  hostPathVolume(mountPath: '/home/gradle/.gradle', hostPath: '/tmp/jenkins/.gradle'),
-  hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
-]) {
-  node(label) {
-    def myRepo = checkout scm
-    def gitCommit = myRepo.GIT_COMMIT
-    def gitBranch = myRepo.GIT_BRANCH
-    def shortGitCommit = "${gitCommit[0..10]}"
-    def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
- 
-    stage('Test') {
-      try {
-        container('gradle') {
-          sh """
-            pwd
-            echo "GIT_BRANCH=${gitBranch}" >> /etc/environment
-            echo "GIT_COMMIT=${gitCommit}" >> /etc/environment
-            gradle test
-            """
-        }
-      }
-      catch (exc) {
-        println "Failed to test - ${currentBuild.fullDisplayName}"
-        throw(exc)
-      }
-    }
     stage('Build') {
-      container('gradle') {
-        sh "gradle build"
-      }
+    	git 'https://github.com/inkrot/carshowroom-server.git'
+    	sh 'gradle build -g build/gradle-5.4.1'
     }
-    /*
-    stage('Create Docker images') {
-      container('docker') {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'dockerhub',
-          usernameVariable: 'DOCKER_HUB_USER',
-          passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
-          sh """
-            docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
-            docker build -t namespace/my-image:${gitCommit} .
-            docker push namespace/my-image:${gitCommit}
-            """
+
+    stage('Test') {
+    	sh 'gradle test -g build/gradle-5.4.1'
+    }
+
+    stage('Containerize') {
+        withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+            sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
+            sh("gcloud container clusters get-credentials carshowroom-cluster --zone us-central1-b")
+            sh("docker build -t ${imageName} .")
+            sh("docker push ${imageName}")
         }
-      }
     }
-    stage('Run kubectl') {
-      container('kubectl') {
-        sh "kubectl get pods"
-      }
+
+    stage('Deploy') {
+    	sh """
+            export CURRENT_BUILD_IMAGE_NAME=${imageName}
+            envsubst < deployment/carshowroom.yaml | kubectl apply -f -
+        """
     }
-    stage('Run helm') {
-      container('helm') {
-        sh "helm list"
-      }
-    }
-    */
-  }
 }
