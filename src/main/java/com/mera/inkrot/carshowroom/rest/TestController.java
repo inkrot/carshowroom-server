@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TestController {
     @GetMapping("/")
     public @ResponseBody String test() {
-        return "<font size=\"6\" color=\"blue\" face=\"verdana\">Test the deployment: first</font>";
+        return "<font size=\"6\" color=\"green\" face=\"verdana\">Test the deployment: second</font>";
     }
 }
