@@ -14,7 +14,7 @@ spec:
       containers:
         - name: carshowroom-app
           #image: gcr.io/carshowroom-241614/carshowroom:v0.1r
-          image: ${CURRENT_BUILD_IMAGE_NAME}
+          image: CURRENT_BUILD_IMAGE_NAME
           env:
             - name: spring.datasource.url
               value: "jdbc:sqlserver://mssql;databaseName=carshowroom"
