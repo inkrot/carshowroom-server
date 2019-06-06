@@ -1,0 +1,31 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_generic_services = true;
+package com.mera.inkrot.carshowroom.grpc.order;
+
+message Order {
+    Customer customer = 1;
+    string modelName = 2;
+    string brandName = 3;
+    repeated Option options = 4;
+}
+
+message Customer {
+    string name = 1;
+}
+
+message Option {
+    string name = 1;
+}
+
+message OrderSaveResponse {
+    Status status = 1;
+    enum Status {
+        ERROR = 0;
+        SUCCESS = 1;
+    }
+}
+
+service OrderService {
+    rpc save (Order) returns (OrderSaveResponse);
+}
