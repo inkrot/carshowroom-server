@@ -40,9 +40,9 @@ public class OrderDto extends Dto implements Serializable {
     public OrderDto() {
     }
 
-    public OrderDto(CustomerDto customer, String carName, String brandName, Set<OptionDto> options) {
+    public OrderDto(CustomerDto customer, String modelName, String brandName, Set<OptionDto> options) {
         this.customer = customer;
-        this.modelName = carName;
+        this.modelName = modelName;
         this.brandName = brandName;
         this.options = options;
     }

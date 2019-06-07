@@ -1,31 +1,33 @@
 syntax = "proto3";
 option java_multiple_files = true;
 option java_generic_services = true;
-package com.mera.inkrot.carshowroom.grpc.order;
+option java_outer_classname = "GRpcOrderBase";
+package com.mera.inkrot.carshowroom.grpc.gen;
 
-message Order {
-    Customer customer = 1;
+message GRpcOrder {
+    GRpcCustomer customer = 1;
     string modelName = 2;
     string brandName = 3;
-    repeated Option options = 4;
+    repeated GRpcOption options = 4;
 }
 
-message Customer {
+message GRpcCustomer {
     string name = 1;
 }
 
-message Option {
-    string name = 1;
+message GRpcOption {
+    int64 id = 1;
+    string name = 2;
 }
 
-message OrderSaveResponse {
-    Status status = 1;
-    enum Status {
+message GRpcOrderSaveResponse {
+    GRpcStatus status = 1;
+    enum GRpcStatus {
         ERROR = 0;
         SUCCESS = 1;
     }
 }
 
-service OrderService {
-    rpc save (Order) returns (OrderSaveResponse);
+service GRpcOrderService {
+    rpc save (GRpcOrder) returns (GRpcOrderSaveResponse);
 }
